@@ -58,6 +58,10 @@ th, td {
             alert("Inserta una palabra");
             return;
         }
+        var tBodyRef = document.getElementById("myTable");
+            while(tBodyRef.hasChildNodes()){
+                tBodyRef.removeChild(tBodyRef.firstChild)
+        }
         document.getElementById("tempLabel").innerHTML = "Buscando.....";
         button.disabled = true;
         fetch("https://localhost:44304/SearchWords?words="+a, {
@@ -65,10 +69,6 @@ th, td {
             })
           .then(res => res.json())
           .then(data => {
-            var tBodyRef = document.getElementById("myTable");
-            while(tBodyRef.hasChildNodes()){
-                tBodyRef.removeChild(tBodyRef.firstChild)
-            }
             for(var k in data){
                 console.log(data[k].date);
                 var path = data[k].filePath.key
@@ -82,11 +82,13 @@ th, td {
                 newCell.appendChild(link);
                 newCell = newRow.insertCell();
                 newText = document.createTextNode(count);
-                newCell.appendChild(newText);
+                newCell.appendChild(newText);              
             };
+            button.disabled = false;
+            document.getElementById("tempLabel").innerHTML = "Completado!";
           })
           .catch(err => {
-            console.log(err)
+            document.getElementById("tempLabel").innerHTML = "No se encontraron resultados";
             button.disabled = false;
           });
       }

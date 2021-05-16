@@ -30,16 +30,19 @@ namespace WebApplication2.Controllers
         [HttpGet]
         public IEnumerable<SearchElements> Get([FromQuery(Name = "words")] string[] words)
         {
-           
+
             ActThirteen act13 = new ActThirteen();
+            for(int i = 0; i < words.Length; i++)
+            {
+                string word = words[i];
+                words[i] = word.ToLower();
+            }
             string fullPath = conf.GetValue<string>(WebHostDefaults.ContentRootKey);
             string myurl = $"{this.Request.Scheme}://{this.Request.Host}{this.Request.PathBase}/files/";
-            string[] wordsToFind = new string[]{
-            "library"
-                };
             var test = act13.executeProgram(fullPath, words, true, myurl);
             var rng = new Random();
-            return Enumerable.Range(0, test.Count-1).Select(index => new SearchElements
+            if (test.Count == 0) { return null; }
+            return Enumerable.Range(0, test.Count).Select(index => new SearchElements
             {   
                 filePath = (KeyValuePair<string,int>)test.ToArray().GetValue(index)
             })

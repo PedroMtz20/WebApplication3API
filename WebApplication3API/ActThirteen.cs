@@ -71,45 +71,45 @@ public class ActThirteen
                         {
                             foreach (string stopWord in stopList)
                             {
-                                if (word != stopWord)
+                                if (word.ToLower() != stopWord.ToLower())
                                 {
                                     if (!freqDict.ContainsKey(word))
                                     {
-                                        freqDict.Add(word, new Word(word/*, filepath*/));
+                                        freqDict.Add(word.ToLower(), new Word(word.ToLower()/*, filepath*/));
                                     }
-                                    freqDict[word].freq++;
+                                    freqDict[word.ToLower()].freq++;
                                     //CONSIGUE EL FILE NAME DEL PATH
                                     string fileName = url + (string)Path.GetFileName(filepath);
                                     //REVISA SI EXISTE YA EL ARCHIVO EN EL DICCIONARIO
-                                    if (!freqDict[word].KeyFileRepetitions.ContainsKey(fileName))
+                                    if (!freqDict[word.ToLower()].KeyFileRepetitions.ContainsKey(fileName))
                                     {
                                         //AGREGA EL NOMBRE DEL ARCHIVO AL DICCIONARIO
-                                        freqDict[word].KeyFileRepetitions.Add(fileName, 0);
+                                        freqDict[word.ToLower()].KeyFileRepetitions.Add(fileName, 0);
                                     }
-                                    freqDict[word].KeyFileRepetitions[fileName]++;
+                                    freqDict[word.ToLower()].KeyFileRepetitions[fileName]++;
                                 }
                             }
                         }
                         else
                         {
-                            if (!freqDict.ContainsKey(word))
+                            if (!freqDict.ContainsKey(word.ToLower()))
                             {
-                                freqDict.Add(word, new Word(word/*, filepath*/));
+                                freqDict.Add(word.ToLower(), new Word(word.ToLower()/*, filepath*/));
                             }
-                            freqDict[word].freq++;
+                            freqDict[word.ToLower()].freq++;
                             //CONSIGUE EL FILE NAME DEL PATH
                             string fileName = url + (string)Path.GetFileName(filepath);
                             //REVISA SI EXISTE YA EL ARCHIVO EN EL DICCIONARIO
-                            if (!freqDict[word].KeyFileRepetitions.ContainsKey(fileName))
+                            if (!freqDict[word.ToLower()].KeyFileRepetitions.ContainsKey(fileName))
                             {
                                 //AGREGA EL NOMBRE DEL ARCHIVO AL DICCIONARIO
-                                freqDict[word].KeyFileRepetitions.Add(fileName, 0);
+                                freqDict[word.ToLower()].KeyFileRepetitions.Add(fileName, 0);
                             }
-                            freqDict[word].KeyFileRepetitions[fileName]++;
+                            freqDict[word.ToLower()].KeyFileRepetitions[fileName]++;
                         }
 
                         //ACTIVIDAD 13
-                        if (wordToFind == word)
+                        if (wordToFind == word.ToLower())
                         {
                             docSearch.Add(url + (string)Path.GetFileName(filepath));
                         }
@@ -219,7 +219,7 @@ public class ActThirteen
                 counter++;
             }
             string title = "Palabra buscada: " + word.Key + "\n--------------------------\n";
-            File.WriteAllText(path + "\\results\\act13\\searchFor" + FirstCharToUpper(word.Key) + ".html", title + dataTableDocSearch.ToMinimalString());
+            //File.WriteAllText(path + "\\results\\act13\\searchFor" + FirstCharToUpper(word.Key) + ".html", title + dataTableDocSearch.ToMinimalString());
             return test;
         }
 
