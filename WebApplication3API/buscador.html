@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>REST Client</title>
+  </head>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    .container {
+      height: 100vh;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol";
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 20px;
+    }
+    label,
+    input[type="submit"] {
+      margin-top: 20px;
+    }
+
+    table, th, td {
+  border: 1px solid black;
+  border-collapse: collapse;
+}
+th, td {
+  padding: 15px;
+}
+  </style>
+  <body>
+    <div class="container">
+      <h1>Buscador de palabras</h1>
+      </h1> 
+      <form>
+        <label>Palabra:</label>
+        <input id="palabra" type="text" />
+        <input id="Button" type="button" value="Buscar" onclick="sendData()"/>
+      </form>
+      <label id="tempLabel"></label>
+      <table id="myTable" style="width:30%" ></table>
+    </div>
+    <script>
+      var button = document.getElementById("Button");
+      document.addEventListener("submit", sendData);
+      function sendData() {
+        const a = document.querySelector("#palabra").value;
+        if (a == undefined || a == ""){
+            alert("Inserta una palabra");
+            return;
+        }
+        document.getElementById("tempLabel").innerHTML = "Buscando.....";
+        button.disabled = true;
+        fetch("https://localhost:44304/SearchWords?words="+a, {
+          method: "GET"
+            })
+          .then(res => res.json())
+          .then(data => {
+            var tBodyRef = document.getElementById("myTable");
+            while(tBodyRef.hasChildNodes()){
+                tBodyRef.removeChild(tBodyRef.firstChild)
+            }
+            for(var k in data){
+                console.log(data[k].date);
+                var path = data[k].filePath.key
+                var count = data[k].filePath.value
+                var newRow = tBodyRef.insertRow(-1);
+                var newCell = newRow.insertCell();
+                var newText = document.createTextNode(path);
+                var link = document.createElement("a");
+                link.setAttribute("href", path);
+                link.appendChild(newText);
+                newCell.appendChild(link);
+                newCell = newRow.insertCell();
+                newText = document.createTextNode(count);
+                newCell.appendChild(newText);
+            };
+          })
+          .catch(err => {
+            console.log(err)
+            button.disabled = false;
+          });
+      }
+    </script>
+  </body>
+</html>
